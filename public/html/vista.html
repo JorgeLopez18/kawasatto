@@ -1,0 +1,64 @@
+<!-- Vista de Productos (vista.html) -->
+
+<!-- Agregado el botón para abrir el formulario de registro -->
+<button onclick="mostrarFormularioRegistro()">Registrar Nuevo Producto</button>
+
+<!-- ... (resto del código) -->
+
+<!-- Formulario para el registro de nuevo producto -->
+<div id="formularioRegistro" style="display: none;">
+    <h2>Registrar Nuevo Producto</h2>
+    <form id="modalRegistroProductoForm">
+        <!-- Agregado el campo para el código de producto -->
+        <div class="form-group">
+            <label for="modalCodigoProducto">Código de Producto:</label>
+            <input type="text" class="form-control" id="modalCodigoProducto" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="modalNombreProducto">Nombre:</label>
+            <input type="text" class="form-control" id="modalNombreProducto" required>
+        </div>
+
+        <div class="form-group">
+            <label for="modalCantidadProducto">Cantidad:</label>
+            <input type="number" class="form-control" id="modalCantidadProducto" required>
+        </div>
+
+        <div class="form-group">
+            <label for="modalPrecioProducto">Precio:</label>
+            <input type="number" class="form-control" id="modalPrecioProducto" required>
+        </div>
+
+        <div class="form-group">
+            <label for="modalImagenProducto">Imagen:</label>
+            <input type="file" class="form-control-file" id="modalImagenProducto" accept="image/*">
+        </div>
+
+        <!-- Botón para registrar nuevo producto -->
+        <button type="button" onclick="registrarNuevoProducto()">Registrar Nuevo Producto</button>
+    </form>
+</div>
+
+<!-- ... (resto del código) -->
+
+<script>
+    // Función para mostrar el formulario de registro
+    function mostrarFormularioRegistro() {
+        document.getElementById('formularioRegistro').style.display = 'block';
+
+        // Generar automáticamente el código de producto
+        const codigoProductoInput = document.getElementById('modalCodigoProducto');
+        codigoProductoInput.value = generarCodigoProducto();
+    }
+
+    // Función para generar automáticamente el código de producto
+    function generarCodigoProducto() {
+        // Lógica para generar el código de producto (puedes personalizarla según tus necesidades)
+        const codigoAleatorio = Math.floor(Math.random() * 1000) + 1;
+        const fecha = new Date();
+        const año = fecha.getFullYear();
+        const codigoProducto = `${año}-${codigoAleatorio}`;
+        return codigoProducto;
+    }
+</script>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <!-- Agregado para DatePicker -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <!-- Estilos para la tarjeta de inicio de sesión -->
+    <style>
+        .login-card {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .login-card h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .login-card input[type="text"],
+        .login-card input[type="password"],
+        .login-card button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .login-card button {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .login-card button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <h2>Admin Login</h2>
+            <form id="loginForm" onsubmit="return validarCredenciales();">
+
+                <input type="text" id="username" name="username" placeholder="Usuario" required>
+                <input type="password" id="password" name="password" placeholder="Contraseña" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+ 
+    <!-- Sección de Visualización de Inventario para Clientes -->
+    <h2>Visualización de Inventario (Clientes)</h2>
+    <button type="button" class="btn btn-info mt-2" onclick="mostrarInventarioCliente()">Ver Inventario</button>
+
+    <!-- Modal para el registro de nuevo producto -->
+    <div class="modal fade" id="registroProductoModal" tabindex="-1" role="dialog" aria-labelledby="registroProductoModalLabel" aria-hidden="true">
+        <!-- Contenido del modal para registrar nuevo producto -->
+        <!-- ... -->
+    </div>
+    <div id="errorMessage"></div>
+
+    <!-- Incluir jQuery antes de bootstrap-datepicker.min.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <!-- Otros scripts y funciones -->
+    <script>
+        // Función para mostrar el inventario para clientes
+        function mostrarInventarioCliente() {
+            // Implementar lógica para mostrar el inventario al cliente
+            // ...
+        }
+    </script>
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>

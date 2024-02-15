@@ -1,0 +1,52 @@
+/* Reset de estilos y configuración global */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px; /* Agrega un poco de padding para evitar que el contenido se pegue a los bordes */
+    box-sizing: border-box; /* Asegura que el padding se tenga en cuenta en el ancho total del body */
+}
+
+/* Contenedor del formulario */
+.login-container {
+    max-width: 100%; /* Utiliza el 100% del ancho del viewport */
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Formulario */
+#loginForm {
+    padding: 20px; /* Añade un poco de espacio alrededor del formulario */
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%; /* Haz que los campos de entrada ocupen todo el ancho del contenedor */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* Asegura que el padding se tenga en cuenta en el ancho total del input */
+}
+
+button {
+    width: 100%; /* Haz que el botón ocupe todo el ancho del contenedor */
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

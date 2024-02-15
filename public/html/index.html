@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kawasatto</title>
+    <!-- Added Bootstrap CSS and JS -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- Added Bootstrap Datepicker CSS and JS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <!-- Added custom CSS -->
+    <style>
+        .mi-titulo {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1 class="mi-titulo">KAWASATTO</h1>
+        <hr>
+
+        <!-- Sección de Registro de Producto -->
+        <div class="row">
+            <div class="col-md-6">
+                <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#registroProductoModal">Registrar Nuevo Producto</button>
+                <button type="button" id="verInventarioBtn" class="btn btn-info mt-2" onclick="verInventario()">Ver Inventario</button>
+            </div>
+        </div>
+
+        <!-- Sección de Inventario -->
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Inventario</h2>
+                <table id="tablaInventario" class="table">
+                    <thead>
+                        <tr>
+                            <th>Nombre del Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>imagen</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventarioBody">
+                        <!-- Aquí se llenarán los datos del inventario dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Sección de Ventas -->
+        <div class="row">
+            <div class="col-md-6">
+                <form id="ventaForm">
+                    <!-- Campos de venta como producto, cantidad, etc. -->
+                    <div class="form-group">
+                        <label for="producto">Producto:</label>
+                        <input type="text" class="form-control" id="producto" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad:</label>
+                        <input type="number" class="form-control" id="cantidad" required>
+                    </div>
+                    <button type="button" class="btn btn-success mt-2" onclick="registrarVenta()">Registrar Venta</button>
+                </form>
+                <br>
+            </div>
+            <button onclick="buscarProducto()">Buscar Producto</button>
+            <form onsubmit="return validarCredenciales()">
+                <!-- Formulario de inicio de sesión -->
+            </form>
+
+            <div class="col-md-6">
+                <!-- Calendario para mostrar ventas por día -->
+                <h2>Historial de Ventas</h2>
+                <div>
+                    <label for="datepicker">Seleccione una Fecha:</label>
+                    <input type="text" id="datepicker" class="form-control">
+                </div>
+                <button type="button" class="btn btn-info mt-2" onclick="mostrarVentasPorDia()">Mostrar Ventas</button>
+            </div>
+        </div>
+
+        <!-- Modal para el registro de nuevo producto -->
+        <div class="modal fade" id="registroProductoModal" tabindex="-1" role="dialog" aria-labelledby="registroProductoModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="registroProductoModalLabel">Registrar Nuevo Producto</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <!-- Contenido del formulario para registrar nuevo producto -->
+                   
+<form id="registroForm">
+    <div class="form-group">
+        <label for="modalNombreProducto">Nombre del Producto:</label>
+        <input type="text" class="form-control" id="modalNombreProducto" required>
+    </div>
+    <div class="form-group">
+        <label for="modalCantidadProducto">Cantidad:</label>
+        <input type="number" class="form-control" id="modalCantidadProducto" required>
+    </div>
+    <div class="form-group">
+        <label for="modalPrecioProducto">Precio:</label>
+        <input type="text" class="form-control" id="modalPrecioProducto" required>
+    </div>
+    <div class="form-group">
+        <label for="modalImagenProducto">Imagen (opcional):</label>
+        <input type="file" class="form-control-file" id="modalImagenProducto">
+    </div>
+    <button type="submit" class="btn btn-primary">Registrar Producto</button>
+</form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="js/app.js"></script>
+    <script src="js/venta.js"></script>
+</body>
+
+<script>
+ function borrarProducto(productId) {
+    if (!productId) {
+        console.error('ID de producto no válido');
+        return;
+    }
+
+    if (confirm('¿Estás seguro de eliminar este producto?')) {
+        fetch('/api/productos/' + productId, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Producto eliminado correctamente');
+                    // Actualizar la tabla de inventario
+                    verInventarioTabla();
+                } else {
+                    throw new Error('Error al eliminar el producto');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al eliminar el producto');
+            });
+    }
+}
+
+
+    document.getElementById("registroForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Evitar el comportamiento predeterminado del formulario (redireccionamiento)
+
+        const producto = document.getElementById("modalNombreProducto").value;
+        const cantidad = document.getElementById("modalCantidadProducto").value;
+        const precio = document.getElementById("modalPrecioProducto").value;
+        const imagen = document.getElementById("modalImagenProducto").value;
+
+        // Enviar la solicitud POST al servidor
+        fetch("/producto", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ producto, cantidad, precio, imagen })
+            })
+            .then(response => response.json())
+            .then(data => {
+    console.log("Producto guardado:", data);
+    // Agregar una nueva fila a la tabla con los datos del producto guardado
+    const tablaInventario = document.getElementById("inventarioBody");
+    const nuevaFila = tablaInventario.insertRow();
+    const celdaNombre = nuevaFila.insertCell(0);
+    const celdaCantidad = nuevaFila.insertCell(1);
+    const celdaPrecio = nuevaFila.insertCell(2);
+    const celdaImagen = nuevaFila.insertCell(3); // Agregar celda para imagen
+    const celdaAcciones = nuevaFila.insertCell(4); // Agregar celda para acciones
+
+    celdaNombre.textContent = data.producto; // Corregido el acceso al nombre del producto
+    celdaCantidad.textContent = data.cantidad;
+    celdaPrecio.textContent = data.precio;
+    // Puedes agregar más líneas para mostrar otros datos del producto si es necesario
+        // Puedes agregar más líneas para mostrar otros datos del producto si es necesario
+            })
+            .catch(error => {
+                console.error("Error al guardar el producto:", error);
+                // Aquí puedes manejar el error si ocurre
+            });
+    });
+
+    
+  // Espera a que el documento HTML se haya cargado completamente
+document.addEventListener("DOMContentLoaded", function() {
+    // Define la función verInventario
+    function verInventarioTabla() {
+            fetch("/api/inventario")
+                .then(response => response.json())
+                .then(data => {
+                    const tablaInventario = document.getElementById("tablaInventario").getElementsByTagName("tbody")[0];
+                    tablaInventario.innerHTML = ""; // Limpiar la tabla antes de agregar nuevos datos
+
+                    data.forEach(producto => {
+                        const nuevaFila = tablaInventario.insertRow();
+                        const celdaNombre = nuevaFila.insertCell(0);
+                        const celdaCantidad = nuevaFila.insertCell(1);
+                        const celdaPrecio = nuevaFila.insertCell(2);
+                        const celdaImagen = nuevaFila.insertCell(3); // Agregar celda para imagen
+                        const celdaAcciones = nuevaFila.insertCell(4); // Agregar celda para acciones
+
+                        celdaNombre.textContent = producto.nombre;
+                        celdaCantidad.textContent = producto.cantidad;
+                        celdaPrecio.textContent = producto.precio;
+
+                        // Mostrar la imagen del producto
+                        if (producto.imagen) {
+                            const imagen = document.createElement("img");
+                            imagen.src = producto.imagen;
+                            imagen.alt = "Imagen de " + producto.nombre;
+                            imagen.style.maxWidth = "100px"; // Ajusta el tamaño de la imagen según sea necesario
+                            celdaImagen.appendChild(imagen);
+                        } else {
+                            celdaImagen.innerHTML = "No disponible"; // Si no hay imagen, muestra un mensaje alternativo
+                        }
+
+                        // Agregar acciones
+                        const btnModificar = document.createElement("button");
+                        btnModificar.textContent = "Modificar";
+                        btnModificar.classList.add("btn", "btn-primary", "mr-2");
+                        btnModificar.onclick = () => mostrarFormularioModificacion(producto.id);
+                        celdaAcciones.appendChild(btnModificar);
+
+                        const btnBorrar = document.createElement("button");
+                        btnBorrar.textContent = "Borrar";
+                        btnBorrar.classList.add("btn", "btn-danger");
+                        btnBorrar.onclick = () => borrarProducto(producto.id);
+                        celdaAcciones.appendChild(btnBorrar);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error al obtener el inventario:", error);
+                });
+        }
+
+        // Llama a la función verInventarioTabla para cargar el inventario al cargar la página
+        verInventarioTabla();
+    });
+</script>
+
+</html>
